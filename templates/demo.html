@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+<meta name="google" content="notranslate">
+
+{% block content %}
+<div class="game-container">
+
+  <p class="clue"><strong>{{ clue }}</strong></p>
+
+  <!-- Container pentru sloturile de răspuns -->
+  <div id="answers-container">
+    {% for i in range(num_answers) %}
+      <div class="answer-slot" id="answer-slot-{{ i }}">
+        {% if revealed[i] %}
+          {{ revealed[i] }}
+        {% else %}
+          ?
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div id="game-message"></div>
+  <input type="text" id="answer-input" placeholder="Introdu un cuvant" autocomplete="off">
+  <button id="check-answer-btn">Verifica</button>
+  <script>
+  document.getElementById("check-answer-btn").addEventListener("click", function() {
+    console.log("Butonul a fost apăsat!");
+  });
+
+  document.getElementById("answer-input").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("check-answer-btn").click();
+    }
+  });
+
+</script>
+
+</div>
+
+{% endblock %}

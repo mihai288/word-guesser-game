@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+<meta name="google" content="notranslate">
+
+{% block content %}
+<div class="game-container">
+  <h2>Level {{ level }}</h2>
+  <p class="clue"><strong>{{ clue }}</strong></p>
+
+  <!-- Adaugă elementul pentru scor -->
+  <div id="score" style="display: none;">{{ score }} 💎</div>
+
+  <!-- Container pentru sloturile de răspuns -->
+  <div id="answers-container">
+    {% for i in range(num_answers) %}
+      <div class="answer-slot" id="answer-slot-{{ i }}">
+        {% if revealed[i] %}
+          {{ revealed[i] }}
+        {% else %}
+          ?
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div id="game-message"></div>
+  <input type="text" id="answer-input" placeholder="Introdu un cuvant" autocomplete="off">
+  <button id="next-level-btn" style="display: none;">Nivel {{ level+1 }} <br>+250 💎</button>
+  <button style="display: none;" id="check-answer-btn">Verifica</button>
+  <script>
+  document.getElementById("check-answer-btn").addEventListener("click", function() {
+    console.log("Butonul a fost apăsat!");
+  });
+
+  document.getElementById("answer-input").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("check-answer-btn").click();
+    }
+  });
+
+</script>
+  <button id="get-answer-btn">Arata un cuvant <br>150 💎</button>
+</div>
+
+{% endblock %}

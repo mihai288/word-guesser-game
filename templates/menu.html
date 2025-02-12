@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Menu - Guess It</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* Reset margins, paddings, and box-sizing */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body style for a mobile-friendly experience */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: #e6f7ff;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    /* Header styling with a gradient background */
+    header {
+      background: linear-gradient(90deg, #4facfe, #00f2fe);
+      padding: 10px 0;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-container {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+    }
+
+    .title-box h1 {
+      font-size: 20px;
+      color: #fff;
+      margin: 0;
+    }
+
+    .user-box {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-name-box,
+    .user-stats-box {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 5px 10px;
+      margin-left: 5px;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .diamond-icon {
+      margin-left: 3px;
+    }
+
+    /* Menu container styles for the game menu page */
+    .menu-container {
+      background: #fff;
+      max-width: 350px;
+      width: 90%;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid #d0eaff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .menu-container h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #005f99;
+    }
+
+    .menu-container p {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: #005f99;
+    }
+
+    /* Menu buttons styles */
+    .menu-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .menu-button {
+      display: block;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      background: linear-gradient(45deg, #4facfe, #00f2fe);
+      color: #fff;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.1s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-button:hover {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+    }
+
+    .menu-button:active {
+      transform: scale(0.98);
+    }
+
+    /* Responsive adjustments for mobile screens */
+    @media (max-width: 400px) {
+      .menu-container {
+        margin: 20px;
+        padding: 15px;
+      }
+      .menu-button {
+        font-size: 16px;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="title-box">
+        <h1>Guess It</h1>
+      </div>
+      {% if current_user.is_authenticated %}
+      <div class="user-box">
+        <div class="user-name-box">
+          <span>{{ current_user.username }}</span>
+        </div>
+        <div class="user-stats-box">
+          <span id="score">{{ current_user.score }} <span class="diamond-icon">💎</span></span>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="menu-container">
+      <h2 style="font-size: 50px;">Salut, <span>{{ current_user.username }}</span></h2>
+      <h2>Bine ai venit pe Guess It!</h2>
+    <p>Testează-ți abilitățile de a ghici cuvinte în acest joc distractiv și provocator. Încearcă să ghicești cuvântul ascuns pe baza indiciilor și câștigă puncte!</p>
+    <div class="menu-buttons">
+      <a href="{{ url_for('game') }}" class="menu-button">Start</a>
+        <a href="{{ url_for('leaderboard') }}" class="menu-button">Leaderboard</a>
+      <a href="{{ url_for('demo') }}" class="menu-button">Demo</a>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

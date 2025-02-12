@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+
+  <!-- Meta viewport pentru design responsiv (mobile-friendly) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GuessIt</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+  <header>
+  <div class="header-container">
+
+    <div class="title-box">
+      <h1><a style="color:white;" href="/menu">Guess It</a></h1>
+    </div>
+    {% if current_user.is_authenticated %}
+    <div class="user-box">
+      <div class="user-name-box">
+        <span>{{ current_user.username }}</span>
+      </div>
+      <div class="user-stats-box">
+        <span id="score">{{ current_user.score }} <span class="diamond-icon">💎</span></span>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</header>
+
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

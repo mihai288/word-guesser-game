@@ -1,0 +1,206 @@
+/* Reset pentru margini, padding și box-sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background: #e6f7ff; /* fundal albastru foarte deschis */
+  color: #333;
+}
+
+/* Header cu gradient albastru și text centrat */
+/* Stilizare pentru header */
+header {
+  background: linear-gradient(90deg, #4facfe, #00f2fe); /* gradient albastru */
+  padding: 10px 0;
+  height: 60px; /* header mai mic */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-container {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+/* Stil pentru titlu */
+.title-box h1 {
+  font-size: 20px; /* font mai mic */
+  color: #fff;
+  margin: 0;
+}
+
+/* Stil pentru containerul de user info */
+.user-box {
+  display: flex;
+  align-items: center;
+}
+
+/* Chenarele separate pentru nume și statistici */
+.user-name-box,
+.user-stats-box {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin-left: 5px;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* Mică ajustare pentru iconul diamant */
+.diamond-icon {
+  margin-left: 3px;
+}
+
+
+/* Containere pentru paginile de autentificare și joc */
+.auth-container, .game-container {
+  background: #fff;
+  max-width: 350px;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid #d0eaff;  /* bordură subtilă albastră */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Stilizare pentru titluri */
+.auth-container h2, .game-container h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #005f99; /* nuanță mai închisă de albastru */
+}
+
+/* Elementele de formular */
+label {
+  font-size: 16px;
+  margin-top: 15px;
+  display: block;
+  color: #005f99;
+}
+
+input[type="text"], input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  font-size: 16px;
+  border: 1px solid #b3d7ff; /* bordură albastru deschis */
+  border-radius: 10px;
+  transition: border 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+  border: 1px solid #4facfe; /* bordură albastră la focus */
+  outline: none;
+}
+
+/* Butoane în stil joc pe telefon */
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(45deg, #4facfe, #00f2fe); /* gradient albastru vibrant */
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background: linear-gradient(45deg, #00c6ff, #0072ff); /* efect de hover cu nuanțe mai închise */
+}
+
+button:active {
+  transform: scale(0.98); /* efect de apăsare */
+}
+
+/* Mesajele de eroare în tonuri de albastru (stil modern) */
+.error {
+  background: #cce5ff;
+  color: #004085;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 15px;
+  text-align: center;
+  border: 1px solid #b8daff;
+}
+
+/* Link pentru autentificare/înregistrare */
+.auth-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.auth-link a {
+  color: #4facfe;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Stiluri specifice pentru pagina de joc */
+.clue {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #005f99;
+}
+
+#answers-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.answer-slot {
+  width: 125px;
+  height: auto;
+  word-wrap: break-word;
+  line-height: 40px;
+  font-size: 22px;
+  border: 2px solid #4facfe;
+  border-radius: 15px;
+  margin: 5px;
+  background-color: #e0f7ff; /* fundal albastru deschis */
+  text-align: center;
+  color: #005f99;
+}
+
+/* Input-ul pentru răspuns în pagina de joc */
+#answer-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  border: 1px solid #b3d7ff;
+  border-radius: 10px;
+  transition: border 0.3s ease;
+  transition: outline 0.3s ease, box-shadow 0.3s ease;
+}
+
+#answer-input:focus {
+  border: 1px solid #4facfe;
+  outline: none;
+}
+
+/* Mesajele de joc */
+#game-message {
+  text-align: center;
+  font-size: 18px;
+  margin: 10px 0;
+  min-height: 24px;
+  color: #005f99;
+}
