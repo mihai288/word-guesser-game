@@ -2,10 +2,10 @@ from flask import Flask, render_template, redirect, url_for, request, jsonify, s
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from rapidfuzz import fuzz  # importă RapidFuzz
+from rapidfuzz import fuzz  
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'cheie-secreta-123'  # Schimbă cheia pentru producție
+app.config['SECRET_KEY'] = 'cheie-secreta-123'  
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///game.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -14,7 +14,6 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 
-# Modelul pentru utilizatori
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
@@ -28,16 +27,11 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# Creăm tabelele în baza de date înainte de rulare
 if __name__ == '__main__':
     with app.app_context():
         #db.drop_all()
         db.create_all()
 
-# Datele pentru niveluri – Nu se trimit răspunsurile corecte către client!
-# Fiecare nivel are:
-#   - un indiciu (clue)
-#   - o listă de răspunsuri
 levels = {
   1: { "clue": "Marci de masini", "answers": ["Dacia", "BMW", "Audi", "Mercedes", "Toyota", "Ford"] },
   2: { "clue": "Mancare italiana", "answers": ["Pizza", "Paste", "Lasagna", "Risotto", "Tiramisu"] },
@@ -146,11 +140,11 @@ def demo():
 
     level_data = levels[1]
     num_answers = len(level_data["answers"])
-    # Inițializare în sesiune pentru răspunsurile dezvăluite
+
     if 'revealed' not in session:
         session['revealed'] = {}
     if str(1) not in session['revealed']:
-        # Folosim None pentru a marca răspunsurile nedezvăluite
+
         session['revealed'][str(1)] = [None] * num_answers
     revealed = session['revealed'][str(1)]
 
@@ -161,13 +155,13 @@ def demo():
 
 
 
-# Ruta de pornire
+
 @app.route('/')
 def index():
     return render_template('menu.html')
 
 
-# Ruta pentru login
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -182,7 +176,6 @@ def login():
     return render_template('login.html')
 
 
-# Ruta pentru înregistrare
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -198,7 +191,6 @@ def register():
     return render_template('register.html')
 
 
-# Ruta pentru logout
 @app.route('/logout')
 @login_required
 def logout():
@@ -212,12 +204,11 @@ def menu():
 @app.route('/leaderboard')
 @login_required
 def leaderboard():
-    # Query all users ordered by score in descending order
     users = User.query.order_by(User.score.desc()).all()
     return render_template('leaderboard.html', users=users)
 
 
-# Ruta pentru pagina de joc
+
 @app.route('/game')
 @login_required
 def game():
@@ -225,15 +216,12 @@ def game():
     if user_level in levels:
         level_data = levels[user_level]
         num_answers = len(level_data["answers"])
-        # Inițializare în sesiune pentru răspunsurile dezvăluite
         if 'revealed' not in session:
             session['revealed'] = {}
         if str(user_level) not in session['revealed']:
-            # Folosim None pentru a marca răspunsurile nedezvăluite
             session['revealed'][str(user_level)] = [None] * num_answers
         revealed = session['revealed'][str(user_level)]
     else:
-        # Dacă nu mai există niveluri, se afișează un mesaj de final de joc
         level_data = {"clue": "Felicitări! Ai terminat jocul.", "answers": []}
         num_answers = 0
         revealed = []
@@ -255,10 +243,8 @@ def check_answer():
     level_data = levels[user_level]
     user_answer = request.json.get('answer', '').strip()
 
-    # Pragul de similaritate (poți ajusta valoarea, de exemplu 80)
     SIMILARITY_THRESHOLD = 80
 
-    # Inițializează structura de răspunsuri dezvăluite în sesiune, dacă nu există
     if 'revealed' not in session:
         session['revealed'] = {}
     if str(user_level) not in session['revealed']:
@@ -266,21 +252,17 @@ def check_answer():
 
     revealed_list = session['revealed'][str(user_level)]
 
-    # Verifică dacă cuvântul a fost deja ghicit
     for i, ans in enumerate(level_data["answers"]):
         if revealed_list[i] is not None:
-            # Dacă răspunsul a fost deja dezvăluit, comparăm cu cel corect
             if fuzz.ratio(user_answer.lower(), ans.lower()) >= SIMILARITY_THRESHOLD:
                 return jsonify({"status": "info", "message": "Ai ghicit deja acest cuvânt."})
 
-    # Caută printre răspunsurile nedezvăluite folosind fuzzy matching
     found = False
     index_found = -1
     for i, ans in enumerate(level_data["answers"]):
         if revealed_list[i] is None:
             similarity = fuzz.ratio(user_answer.lower(), ans.lower())
             if similarity >= SIMILARITY_THRESHOLD:
-                # Marchez răspunsul ca dezvăluit și folosesc forma corectă (din lista noastră)
                 revealed_list[i] = ans
                 session.modified = True
                 found = True
@@ -288,9 +270,7 @@ def check_answer():
                 break
 
     if found:
-        # Verifică dacă toate răspunsurile au fost dezvăluite
         if all(item is not None for item in revealed_list):
-            # Ștergem din sesiune înregistrarea pentru acest nivel pentru a porni de la zero la următorul
             session['revealed'].pop(str(user_level))
             return jsonify({
                 "status": "correct",
@@ -319,9 +299,9 @@ def check_answer():
 @login_required
 def next_level():
     try:
-        current_user.level += 1  # Incrementăm nivelul utilizatorului
+        current_user.level += 1  
         current_user.score += 250
-        db.session.commit()  # Salvăm în baza de date
+        db.session.commit()
         return jsonify({"status": "success", "level": current_user.level})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
@@ -333,13 +313,11 @@ def get_answer():
     if user_level not in levels:
         return jsonify({"status": "error", "message": "Nivel invalid."}), 400
 
-    # Verifică dacă utilizatorul are suficient scor
     if current_user.score < 150:
         return jsonify({"status": "error", "message": "Sold insuficient pentru a obține un răspuns."})
 
     level_data = levels[user_level]
 
-    # Inițializare în sesiune pentru răspunsurile dezvăluite, dacă nu există
     if 'revealed' not in session:
         session['revealed'] = {}
     if str(user_level) not in session['revealed']:
@@ -347,19 +325,17 @@ def get_answer():
 
     revealed_list = session['revealed'][str(user_level)]
 
-    # Găsește primul răspuns nedezvăluit
     index_found = -1
     for i, ans in enumerate(level_data["answers"]):
         if revealed_list[i] is None:
             index_found = i
-            revealed_list[i] = ans  # dezvăluie răspunsul corect
+            revealed_list[i] = ans  
             session.modified = True
             break
 
     if index_found == -1:
         return jsonify({"status": "error", "message": "Toate răspunsurile sunt deja dezvăluite."})
 
-    # Scade 150 de puncte din scorul utilizatorului
     current_user.score -= 150
     db.session.commit()
 
